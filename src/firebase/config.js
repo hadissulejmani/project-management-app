@@ -1,9 +1,6 @@
-import {
-  initializeApp,
-  getFirestore,
-  getAuthentication,
-  getTimestamp,
-} from "firebase/app";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
@@ -17,7 +14,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuthentication(app);
-const timestamp = getTimestamp(app);
+const auth = getAuth(app);
+const timestamp = app.firestore.FieldValue.serverTimestamp;
 
-export { db, auth, timestamp };
+export { app, db, auth, timestamp };
