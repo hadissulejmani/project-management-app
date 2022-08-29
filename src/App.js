@@ -17,7 +17,7 @@ function App() {
       {authIsReady && (
         <BrowserRouter>
           <Sidebar />
-          <div className="cotnainer">
+          <div className="container">
             <Navbar />
             <Routes>
               {user && <Route path="/" element={<Dashboard />} />}
