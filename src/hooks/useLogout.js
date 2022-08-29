@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { auth, db } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
+import { signOut } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 export const useLogout = () => {
   const [isCancelled, setIsCancelled] = useState(false);
@@ -15,10 +17,18 @@ export const useLogout = () => {
     try {
       // update online status
       const { uid } = auth.currentUser;
-      await db.collection("users").doc(uid).update({ online: false });
+      console.log("uid: ", uid);
+      //await db.collection("users").doc(uid).update({ online: false });
+      await setDoc(
+        doc(db, "users", uid),
+        {
+          online: false,
+        },
+        { merge: true }
+      );
 
       // sign the user out
-      await auth.signOut();
+      await signOut(auth);
 
       // dispatch logout action
       dispatch({ type: "LOGOUT" });

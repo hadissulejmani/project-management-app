@@ -14,13 +14,14 @@ export default function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(email, password, displayName, thumbnail);
     signup(email, password, displayName, thumbnail);
   };
 
   const handleFileChange = (e) => {
     setThumbnail(null);
     let selected = e.target.files[0];
-    console.log(selected);
+    console.log("selected: ", selected);
 
     if (!selected) {
       setThumbnailError("Please select a file");
@@ -42,9 +43,9 @@ export default function Signup() {
 
   return (
     <form onSubmit={handleSubmit} className="auth-form">
-      <h2>sign up</h2>
+      <h2>Sign up</h2>
       <label>
-        <span>email:</span>
+        <span>Email:</span>
         <input
           required
           type="email"
@@ -53,7 +54,7 @@ export default function Signup() {
         />
       </label>
       <label>
-        <span>password:</span>
+        <span>Password:</span>
         <input
           required
           type="password"
@@ -62,7 +63,7 @@ export default function Signup() {
         />
       </label>
       <label>
-        <span>display name:</span>
+        <span>Username:</span>
         <input
           required
           type="text"
@@ -78,7 +79,7 @@ export default function Signup() {
       {!isPending && <button className="btn">Sign up</button>}
       {isPending && (
         <button className="btn" disabled>
-          loading
+          Loading
         </button>
       )}
       {error && <div className="error">{error}</div>}
