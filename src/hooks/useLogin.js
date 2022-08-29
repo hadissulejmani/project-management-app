@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { auth } from "../firebase/config";
+import { auth, db } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
 
 export const useLogin = () => {
@@ -15,6 +15,10 @@ export const useLogin = () => {
     try {
       // login
       const res = await auth.signInWithEmailAndPassword(email, password);
+
+      // update online status
+      const documentRef = db.collection("users").doc(res.user.uid);
+      await documentRef.update({ online: true });
 
       // dispatch login action
       dispatch({ type: "LOGIN", payload: res.user });
