@@ -13,31 +13,26 @@ export const useLogout = () => {
   const logout = async () => {
     setError(null);
     setIsPending(true);
+    setIsCancelled(false);
 
     try {
       // update online status
       const { uid } = auth.currentUser;
-      console.log("uid: ", uid);
-      //await db.collection("users").doc(uid).update({ online: false });
-      await setDoc(
-        doc(db, "users", uid),
-        {
-          online: false,
-        },
-        { merge: true }
-      );
 
       // sign the user out
-      await signOut(auth);
-
-      // dispatch logout action
-      dispatch({ type: "LOGOUT" });
-
-      // update state
-      if (!isCancelled) {
-        setIsPending(false);
-        setError(null);
-      }
+      await signOut(auth)
+        .then(() => {
+          // update state
+          setDoc(doc(db, "users", uid), { online: false }, { merge: true });
+        })
+        .then(
+          // dispatch logout action
+          dispatch({ type: "LOGOUT" })
+        )
+        .then(() => {
+          setIsPending(false);
+          setError(null);
+        });
     } catch (err) {
       if (!isCancelled) {
         setError(err.message);

@@ -3,8 +3,6 @@ import { auth, db } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { Navigate } from "react-router-dom";
-import Dashboard from "../pages/dashboard/Dashboard";
 import { updateProfile } from "firebase/auth";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../firebase/config";
@@ -31,11 +29,12 @@ export const useSignup = () => {
       const uploadPath = `thumbnails/${res.user.uid}/${thumbnail.name}`;
       const storageRef = await ref(storage, uploadPath);
 
-      //const imgUrl = await img.ref.getDownloadURL();
-      const img = await uploadBytes(storageRef, thumbnail).then((snapshot) => {
+      await uploadBytes(storageRef, thumbnail).then((snapshot) => {
         getDownloadURL(storageRef)
           .then((url) => {
+            // add display AND PHOTO_URL name to user
             updateProfile(res.user, { displayName, photoURL: url });
+            // create a user document
             setDoc(doc(db, "users", res.user.uid), {
               online: true,
               displayName,
@@ -51,21 +50,6 @@ export const useSignup = () => {
             setError(null);
           });
       });
-
-      console.log("uploadPath, img:", uploadPath, img);
-      // add display AND PHOTO_URL name to user
-      //await updateProfile(res.user, { displayName, photoURL: imgUrl });
-      /*
-      // create a user document
-      await setDoc(doc(db, "users", res.user.uid), {
-        online: true,
-        displayName,
-        photoURL: imgUrl,
-      });
-
-      // dispatch login action
-      dispatch({ type: "LOGIN", payload: res.user });
-      */
     } catch (err) {
       if (!isCancelled) {
         setError(err.message);
