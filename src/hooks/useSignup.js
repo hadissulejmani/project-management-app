@@ -6,6 +6,9 @@ import { doc, setDoc } from "firebase/firestore";
 import { Navigate } from "react-router-dom";
 import Dashboard from "../pages/dashboard/Dashboard";
 import { updateProfile } from "firebase/auth";
+import { getDownloadURL, ref } from "firebase/storage";
+import { storage } from "../firebase/config";
+import { uploadBytes } from "firebase/storage";
 export const useSignup = () => {
   const [isCancelled, setIsCancelled] = useState(false);
   const [error, setError] = useState(null);
@@ -28,14 +31,30 @@ export const useSignup = () => {
 
       // upload user thumbnail
       const uploadPath = `thumbnails/${res.user.uid}/${thumbnail.name}`;
-      const img = await db.ref(uploadPath).put(thumbnail);
-      const imgUrl = await img.ref.getDownloadURL();
+      const storageRef = await ref(storage, uploadPath);
 
-      console.log("uploadPath, img, imgUrl:", uploadPath, img, imgUrl);
+      //const imgUrl = await img.ref.getDownloadURL();
+      const img = await uploadBytes(storageRef, thumbnail).then((snapshot) => {
+        getDownloadURL(storageRef)
+          .then((url) => {
+            updateProfile(res.user, { displayName, photoURL: url });
+            setDoc(doc(db, "users", res.user.uid), {
+              online: true,
+              displayName,
+              photoURL: url,
+            });
+          })
+          .then(() =>
+            // dispatch login action
+            dispatch({ type: "LOGIN", payload: res.user })
+          );
+      });
+
+      console.log("uploadPath, img:", uploadPath, img);
 
       // add display AND PHOTO_URL name to user
-      await updateProfile(res.user, { displayName, photoURL: imgUrl });
-
+      //await updateProfile(res.user, { displayName, photoURL: imgUrl });
+      /*
       // create a user document
       await setDoc(doc(db, "users", res.user.uid), {
         online: true,
@@ -45,7 +64,7 @@ export const useSignup = () => {
 
       // dispatch login action
       dispatch({ type: "LOGIN", payload: res.user });
-
+      */
       if (!isCancelled) {
         setIsPending(false);
         setError(null);

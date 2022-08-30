@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { auth, db } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export const useLogin = () => {
   const [isCancelled, setIsCancelled] = useState(false);
@@ -14,7 +15,7 @@ export const useLogin = () => {
 
     try {
       // login
-      const res = await auth.signInWithEmailAndPassword(email, password);
+      const res = await signInWithEmailAndPassword(auth, email, password);
 
       // update online status
       const documentRef = db.collection("users").doc(res.user.uid);
