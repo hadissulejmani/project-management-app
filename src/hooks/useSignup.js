@@ -27,8 +27,6 @@ export const useSignup = () => {
         throw new Error("Could not complete signup");
       }
 
-      console.log("res: ", res);
-
       // upload user thumbnail
       const uploadPath = `thumbnails/${res.user.uid}/${thumbnail.name}`;
       const storageRef = await ref(storage, uploadPath);
@@ -47,11 +45,14 @@ export const useSignup = () => {
           .then(() =>
             // dispatch login action
             dispatch({ type: "LOGIN", payload: res.user })
-          );
+          )
+          .then(() => {
+            setIsPending(false);
+            setError(null);
+          });
       });
 
       console.log("uploadPath, img:", uploadPath, img);
-
       // add display AND PHOTO_URL name to user
       //await updateProfile(res.user, { displayName, photoURL: imgUrl });
       /*
@@ -65,10 +66,6 @@ export const useSignup = () => {
       // dispatch login action
       dispatch({ type: "LOGIN", payload: res.user });
       */
-      if (!isCancelled) {
-        setIsPending(false);
-        setError(null);
-      }
     } catch (err) {
       if (!isCancelled) {
         setError(err.message);

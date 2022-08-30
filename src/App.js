@@ -31,6 +31,9 @@ function App() {
                   element={<Navigate to="/login" replace={true} />}
                 />
               )}
+              {user && (
+                <Route path="*" element={<Navigate to="/" replace={true} />} />
+              )}
             </Routes>
           </div>
         </BrowserRouter>
