@@ -17,7 +17,6 @@ export default function Dashboard() {
   const changeFilter = (newFilter) => {
     setFilter(newFilter);
   };
-  /*
   const projects = documents
     ? documents.filter((document) => {
         switch (filter) {
@@ -42,14 +41,12 @@ export default function Dashboard() {
         }
       })
     : null;
-    */
   return (
-    <div>Dashboard</div>
-    /*{
+    <div>
       <h2 className="page-title">Dashboard</h2>
       {error && <p className="error">{error}</p>}
       {documents && <ProjectFilter changeFilter={changeFilter} />}
-      {projects && <ProjectList projects={projects} />}
-    </div>*/
+      {/*projects && <ProjectList projects={projects} />*/}
+    </div>
   );
 }
