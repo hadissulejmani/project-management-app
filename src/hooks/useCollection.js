@@ -3,16 +3,17 @@ import { db } from "../firebase/config";
 import { collection, where, query, orderBy } from "firebase/firestore";
 import { onSnapshot } from "firebase/firestore";
 
-export const useCollection = (col, _query, _orderBy) => {
+export const useCollection = (col) => {
   const [documents, setDocuments] = useState(null);
   const [error, setError] = useState(null);
 
   // if we don't use a ref --> infinite loop in useEffect
   // _query is an array and is "different" on every function call
-  const queryRef = useRef(_query).current;
-  const orderByRef = useRef(_orderBy).current;
+  //const queryRef = useRef(_query).current;
+  //const orderByRef = useRef(_orderBy).current;
 
   useEffect(() => {
+    /*
     const q = query(
       collection(db, col),
       queryRef
@@ -21,9 +22,9 @@ export const useCollection = (col, _query, _orderBy) => {
         ? orderBy(...orderByRef)
         : orderBy()
     );
-
+*/
     const unsubscribe = onSnapshot(
-      q,
+      collection(db, col),
       (snapshot) => {
         let results = [];
         snapshot.forEach((doc) => {
@@ -42,7 +43,7 @@ export const useCollection = (col, _query, _orderBy) => {
 
     // unsubscribe on unmount
     return () => unsubscribe();
-  }, [col, queryRef, orderByRef]);
+  }, [col]);
 
   return { documents, error };
 };
