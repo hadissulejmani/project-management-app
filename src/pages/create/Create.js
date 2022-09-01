@@ -44,6 +44,10 @@ export default function Create() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  };
+  /*
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setFormError(null);
 
     if (!category) {
@@ -62,6 +66,7 @@ export default function Create() {
         id: u.value.id,
       };
     });
+
     const createdBy = {
       displayName: user.displayName,
       photoURL: user.photoURL,
@@ -79,11 +84,12 @@ export default function Create() {
     };
 
     await addDocument(project);
+
     if (!response.error) {
       navigate("/");
     }
   };
-
+*/
   return (
     <div className="create-form">
       <h2 className="page-title">Create a new Project</h2>

@@ -41,6 +41,9 @@ export default function Dashboard() {
         }
       })
     : null;
+
+  console.log("projects: ", projects);
+
   return (
     <div>
       <h2 className="page-title">Dashboard</h2>
