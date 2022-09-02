@@ -44,10 +44,6 @@ export default function Create() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  };
-  /*
-  const handleSubmit = async (e) => {
-    e.preventDefault();
     setFormError(null);
 
     if (!category) {
@@ -67,11 +63,15 @@ export default function Create() {
       };
     });
 
+    console.log("Assigned users: ", assignedUsersList);
+
     const createdBy = {
       displayName: user.displayName,
       photoURL: user.photoURL,
       id: user.uid,
     };
+
+    console.log("Created by: ", createdBy);
 
     const project = {
       name,
@@ -79,9 +79,11 @@ export default function Create() {
       assignedUsersList,
       createdBy,
       category: category.value,
-      dueDate: timestamp.fromDate(new Date(dueDate)),
+      dueDate: new Date(dueDate),
       comments: [],
     };
+
+    console.log("Project: ", project);
 
     await addDocument(project);
 
@@ -89,7 +91,7 @@ export default function Create() {
       navigate("/");
     }
   };
-*/
+
   return (
     <div className="create-form">
       <h2 className="page-title">Create a new Project</h2>
