@@ -34,7 +34,6 @@ export default function Dashboard() {
           case "design":
           case "sales":
           case "marketing":
-            console.log(document.category, filter);
             return document.category === filter;
           default:
             return true;
@@ -42,14 +41,12 @@ export default function Dashboard() {
       })
     : null;
 
-  console.log("projects: ", projects);
-
   return (
     <div>
       <h2 className="page-title">Dashboard</h2>
       {error && <p className="error">{error}</p>}
       {documents && <ProjectFilter changeFilter={changeFilter} />}
-      {/*projects && <ProjectList projects={projects} />*/}
+      {projects && <ProjectList projects={projects} />}
     </div>
   );
 }
