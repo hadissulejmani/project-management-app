@@ -6,6 +6,7 @@ import Create from "./pages/create/Create";
 import Project from "./pages/project/Project";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
+import OnlineUsers from "./components/OnlineUsers";
 import "./App.css";
 import { useAuthContext } from "./hooks/useAuthContext";
 
@@ -16,7 +17,7 @@ function App() {
     <div className="App">
       {authIsReady && (
         <BrowserRouter>
-          <Sidebar />
+          {user && <Sidebar />}
           <div className="container">
             <Navbar />
             <Routes>
@@ -36,6 +37,7 @@ function App() {
               )}
             </Routes>
           </div>
+          {user && <OnlineUsers />}
         </BrowserRouter>
       )}
     </div>
