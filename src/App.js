@@ -14,7 +14,7 @@ function App() {
   const { user, authIsReady } = useAuthContext();
 
   return (
-    <div className="App">
+    <div className="mx-5">
       {authIsReady && (
         <BrowserRouter>
           {user && <Sidebar />}
